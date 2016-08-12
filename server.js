@@ -46,6 +46,19 @@ mongodb.MongoClient.connect(process.env.DB_URL, function(err,database){
         console.log("App is now running on port", port);
         
     });
+
+
+/**RESTful API server for interacting with MongoDB database**/
+
+/* "/polls"
+*  GET: find all polls
+*  POST: creates a new poll
+*/
+
+
+
+
+
     
 
 });

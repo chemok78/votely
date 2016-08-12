@@ -1,4 +1,4 @@
-Welcome to Votely: a Voting App build with the MEAN stack + Chart JS
+Welcome to Votely: 
 
 ## Functions:
 

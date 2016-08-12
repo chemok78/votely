@@ -55,10 +55,39 @@ mongodb.MongoClient.connect(process.env.DB_URL, function(err,database){
 *  POST: creates a new poll
 */
 
-
-
-
-
+    app.get("/polls", function(req,res){
+        
+      
+        
+        
+    });
     
+    app.post("/contacts", function(req,res){
+        
+    
+        
+    });
+    
+/* "/polls/:id"
+*   GET: find poll by id
+*   PUT: update poll by id
+*   DELETE: deletes contact by id
+*/
+
+    app.get("/polls/:id", function(req,res){
+        
+        
+    });
+    
+    app.put("/polls/:id", function(req,re){
+        
+        
+    });
+    
+    app.delete("/polls/:id", function(req,res){
+        
+        
+    });
+
 
 });

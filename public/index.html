@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="pollsApp">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, intial-scale=1">
+        <title>Votely</title>
+        <!--load jQuery-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <!--load Bootstrap JS-->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <!--load Angular JS-->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.js"></script> 
+        <!--latest compiled and minified Bootstap CSS-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <!--link custom CSS file-->
+        <link rel="stylesheet" type="text/css" href="../public/css/style.css">
+    </head>
+    
+    
+    <body>
+    <!-- NAVBAR ================== ---->        
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="nav-header">
+                <a class="navbar-brand" href="/">Votely</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active"><a href="/">Home</a></li>
+                    <li><a>My Polls</a></li>
+                    <li><a>New Poll</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>    
+        
+    <!-- Dynamically render templates Angular JS -->
+    <div class="container" ng-view>
+        
+    </div>
+        
+    <footer>
+        <div class="container">
+            <p>
+                Copyright © Votely 2016. All Rights Reserved
+            </p>
+        </div>    
+    </footer>    
+    </body>
+    
+</html>

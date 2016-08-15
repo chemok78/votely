@@ -1,0 +1,40 @@
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, intial-scale=1">
+        <title>Votely</title>
+        <!--load jQuery-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <!--load Bootstrap JS-->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <!--load Angular JS-->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.js"></script> 
+        <!--latest compiled and minified Bootstap CSS-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <!--link custom CSS file-->
+        <link rel="stylesheet" type="text/css" href="../public/css/style.css">
+    </head>
+    
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3>Make a new poll</h3>
+        </div>
+        
+        <div class="panel-body">
+            <form>
+                <div class="form-group">
+                    <label>Title (required)</label>
+                    <input id="poll" type="text" class="form-control" placeholder="Title of your poll" ng-model="poll.title" required>
+                </div>
+                <div class="form-group">
+                    <label>Options (seperated by a line)</label>
+                    <input id="poll" type="text" class="form-control" placeholder="Possible answers, seperated by a line" ng-model="poll.options" required>
+                </div>
+                <button type="submit" class="btn btn-default" ng-click="savePoll(poll)">Submit</button>
+            </form>
+            
+        </div>
+    </div>
+</div>

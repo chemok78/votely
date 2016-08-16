@@ -4,3 +4,10 @@ body {
     
 }
 
+.poll-link {
+/*make anchor tags fill entire list item*/    
+    text-decoration: none;
+     display: block;
+     width: 100%;
+     height: 100%;
+}

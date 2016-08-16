@@ -9,7 +9,8 @@
     </div>
     
     <ul class="list-group">
-        <li ng-repeat="poll in polls" class="list-group-item"><a ng-href="/polls/{{poll.id}}">{{poll.title}}</a></li>
+        <li ng-repeat="poll in polls" class="list-group-item"><a ng-href="/polls/{{poll._id}}" class="poll-link">{{poll.title}}</a></li>
+        <!--polls is attached to $scope by ListController and retrieved by Polls service-->
     </ul>
 </div>
 

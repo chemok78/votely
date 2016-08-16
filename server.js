@@ -10,7 +10,7 @@ var bodyParser = require('body-parser');
 //load body parser to parse incoming request bodies, available under req.body
 var mongodb = require('mongodb');
 //load native mongoDB driver
-var ObjectID = mongodb.ObjectID
+var ObjectID = mongodb.ObjectID;
 //load objectID method so we can do var objectId = new ObjectID
 
 var POLLS_COLLECTION = "polls";
@@ -65,10 +65,6 @@ mongodb.MongoClient.connect(process.env.DB_URL, function(err, database) {
     //res.status: sets the HTTP status for the response
   }
 
-
-
-
-
   /* "/polls"
    *  GET: find all polls
    *  POST: creates a new poll
@@ -86,13 +82,11 @@ mongodb.MongoClient.connect(process.env.DB_URL, function(err, database) {
         handleError(res, err.message, "Failed to get polls.");
 
       } else {
-
+      
         res.status(200).json(docs);
         //Status code 200 OK and send results as JSON object to client
 
       }
-
-
 
     });
 
@@ -111,7 +105,7 @@ mongodb.MongoClient.connect(process.env.DB_URL, function(err, database) {
       //if the title field and the options array are empty, do:    
 
       handleError(res, "Invalid user input", "Fill in title and options.", 400);
-      //send a 400 bad requets HTTP status code
+      //send a 400 bad request HTTP status code
 
 
     }
@@ -133,13 +127,9 @@ mongodb.MongoClient.connect(process.env.DB_URL, function(err, database) {
         //201 Created statuscode and send the inserted document in JSON format.
       }
 
-    }); //app.post("/contacts")
+    }); 
 
-
-
-
-
-  });
+  }); //app.post("/contacts")
 
   /* "/polls/:id"
    *   GET: find poll by id
@@ -209,7 +199,7 @@ mongodb.MongoClient.connect(process.env.DB_URL, function(err, database) {
 
       if (err) {
 
-        handleError(res, err.message, "Failed to dalete contact");
+        handleError(res, err.message, "Failed to delete contact");
 
       } else {
 

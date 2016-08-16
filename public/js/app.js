@@ -1,13 +1,5 @@
 /*global angular*/
 
-//Angular JS: route user requests, render views and send data to + from database
-
-/* Root route
-*render the appropriate view and template using routeProvider (index.html and list.html)
-*fetch polls from the database using a service (GET /polls)
-*pass data from service to view with controller (listcontroller)
-*/
-
 angular.module("pollsApp", ['ngRoute'])
 //create Angular app and inject ngRoute dependency
     .config(function($routeProvider){
@@ -40,13 +32,13 @@ angular.module("pollsApp", ['ngRoute'])
         //edit a poll: add new options 
         //delete a poll
             
-            templateUrl: "poll.html",
+            templateUrl: "public/poll.html",
             controller: "EditPollController"
             
         })
         .when("/mypolls", {
         //route for showing polls of logged in user
-        templateUrl: "mylist.html",
+        templateUrl: "public/mylist.html",
         controller: "MyListController"
             
         })

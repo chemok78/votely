@@ -95,34 +95,12 @@ mongodb.MongoClient.connect(process.env.DB_URL, function(err, database) {
 
   app.post("/polls", function(req, res) {
     //create a new poll
-
+    
     var newPoll = req.body;
     //get the request body and save as newPoll
-    newPoll.createDate = new Date();
-    //save the date created as property createDate
     
-    /*
-    var newOptions = [ ];
-
-    newPoll.options.forEach(function(item){
-      
-      var newArray = [ ];
-      
-      newArray.push(item);
-      
-      newOptions.push(newArray);
-      
-    });
-    
-    newPoll.options = newOptions;
-    
-    newPoll.options.forEach(function(item){
-      
-      item.push(0);
-      
-    });
-    
-    */
+    newPoll.date = Date();
+    //create a new Date string and attach to .date property
     
     /*newPoll.options is an array of options as strings*/
     /*convert newPoll.options to an object with key:value as option: 0 (zero for number of votes to start with)*/

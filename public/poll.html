@@ -10,8 +10,7 @@
             <div class="form-group">
               <label for="vote">I would like to vote for:</label>
               <select class="form-control" id="vote">
-                <option>1</option>
-                <option>2</option> 
+                <option ng-repeat="(key,value) in poll.options">{{key}}</option>
               </select>
             </div>
             <button type="submit" class="btn btn-primary" ng-click="">Vote</button>

@@ -100,7 +100,45 @@ mongodb.MongoClient.connect(process.env.DB_URL, function(err, database) {
     //get the request body and save as newPoll
     newPoll.createDate = new Date();
     //save the date created as property createDate
+    
+    /*
+    var newOptions = [ ];
 
+    newPoll.options.forEach(function(item){
+      
+      var newArray = [ ];
+      
+      newArray.push(item);
+      
+      newOptions.push(newArray);
+      
+    });
+    
+    newPoll.options = newOptions;
+    
+    newPoll.options.forEach(function(item){
+      
+      item.push(0);
+      
+    });
+    
+    */
+    
+    /*newPoll.options is an array of options as strings*/
+    /*convert newPoll.options to an object with key:value as option: 0 (zero for number of votes to start with)*/
+    
+    var newObject = { };
+    //create new empty object
+    
+    newPoll.options.forEach(function(item){
+    //loop and add each item of options array as key and set to 0 value
+      newObject[item] = 0;
+      
+    });
+    
+    newPoll.options = newObject;
+    
+    
     if (!req.body.title || !req.body.options) {
       //if the title field and the options array are empty, do:    
 
@@ -144,7 +182,6 @@ mongodb.MongoClient.connect(process.env.DB_URL, function(err, database) {
     }, function(err, doc) {
       //load the POLLS collection
       //convert id paramater to mongo ObjectID (12 byte BSON object) and search the database for ID
-
 
       if (err) {
 

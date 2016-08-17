@@ -148,7 +148,7 @@ mongodb.MongoClient.connect(process.env.DB_URL, function(err, database) {
 
       if (err) {
 
-        handleError(res, err.message, "Failed to get contact");
+        handleError(res, err.message, "Failed to get poll");
 
       } else {
 

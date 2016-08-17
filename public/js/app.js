@@ -32,13 +32,13 @@ angular.module("pollsApp", ['ngRoute'])
         //edit a poll: add new options 
         //delete a poll
             
-            templateUrl: "public/poll.html",
+            templateUrl: "poll.html",
             controller: "EditPollController"
             
         })
         .when("/mypolls", {
         //route for showing polls of logged in user
-        templateUrl: "public/mylist.html",
+        templateUrl: "mylist.html",
         controller: "MyListController"
             
         })
@@ -104,8 +104,10 @@ angular.module("pollsApp", ['ngRoute'])
         };
         
         this.getPoll = function(pollId){
-        //service for getting a poll by pollId. GET /polls/:pollId    
-            var url = "/polls" + pollId;
+        //service for getting a poll by pollId. GET /polls/:pollId  
+            
+            var url = "/polls/" + pollId;
+            
             return $http.get(url)
             //$http.get(url,[config)
                 .then(function(response){
@@ -187,9 +189,7 @@ angular.module("pollsApp", ['ngRoute'])
                 var pollUrl = "/polls/" + doc.data._id;
                 
                 $location.path(pollUrl);
-                //$location.path() returns path of current URL
-                //if you call $scope.savePoll it returns the path of the poll
-                    
+                //$location.path() redirects to specified url + path
                 
             }, function(response){
             //second function handles the error       
@@ -206,13 +206,15 @@ angular.module("pollsApp", ['ngRoute'])
         
     })
     
-    .controller("EditPollController", function($scope,$routeParams, Polls){
+    .controller("EditPollController", function($scope,$routeParams,Polls){
     //edit (add new option) and delete a poll        
-        Polls.getPoll($routeParams.contactId)
+        Polls.getPoll($routeParams.pollId)
+        //routeparams.pollId matches whenever :pollId is in the route. Which is .when("/polls/:pollId"..
         //get the poll first using the contactId parameter
             .then(function(doc){
                 
                $scope.poll = doc.data; 
+               //attach the data to the $scope as poll property
                 
             }, function (response){
                 
@@ -233,6 +235,5 @@ angular.module("pollsApp", ['ngRoute'])
         };
     
             
-            
-    })
+    });
     

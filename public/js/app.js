@@ -1,4 +1,4 @@
-/*global angular*/
+ /*global angular*/
 
 angular.module("pollsApp", ['ngRoute'])
 //create Angular app and inject ngRoute dependency
@@ -88,7 +88,7 @@ angular.module("pollsApp", ['ngRoute'])
         
         this.createPoll = function(poll){
         //service for creating a new poll. POST /polls
-        //insets a poll as a parameter
+        //inserts a poll as a parameter
             return $http.post("/polls", poll)
             //$http.post(url, data, [config]);
                 .then(function(response){
@@ -124,16 +124,21 @@ angular.module("pollsApp", ['ngRoute'])
         
         this.editPoll = function(poll) {
          //service for editing a poll. PUT /polls/:pollId
-         var url = "/polls" + poll._id;
+         var url = "/polls/" + poll._id;
+         
          return $http.put(url,poll)
          //$http.put(url, data, [config])
             .then(function(response){
                 
+                alert("Thanks for the vote!");
+                
                 return response;
+                
                 
             }, function(response){
                 
                 alert("Error editing poll");
+                
                 console.log(response);
                 
             });
@@ -142,7 +147,7 @@ angular.module("pollsApp", ['ngRoute'])
         
         this.deletePoll = function(pollId){
         //service for deleting a poll. DELETE /polls/:pollId
-            var url = "/polls" + pollId;
+            var url = "/polls/" + pollId;
             return $http.delete(url)
                 .then(function(response){
                     
@@ -206,7 +211,7 @@ angular.module("pollsApp", ['ngRoute'])
         
     })
     
-    .controller("EditPollController", function($scope,$routeParams,Polls){
+    .controller("EditPollController", function($scope,$routeParams,$location,Polls){
     //edit (add new option) and delete a poll        
         Polls.getPoll($routeParams.pollId)
         //routeparams.pollId matches whenever :pollId is in the route. Which is .when("/polls/:pollId"..
@@ -215,20 +220,52 @@ angular.module("pollsApp", ['ngRoute'])
                 
                $scope.poll = doc.data; 
                //attach the data to the $scope as poll property
+               
+               $scope.poll.vote = $scope.poll.options[0].option;
+                //poll.vote in scope holds the selected option
+                //set poll.vote to first option in options array to prevent array showing empty first option
                 
             }, function (response){
                 
                 alert(response);
                 
             });
+        
             
-        $scope.saveContact = function(poll){
+        $scope.savePoll = function(poll){
             
           Polls.editPoll(poll);
             
         };
         
-        $scope.deleteContact = function(pollId){
+        $scope.votePoll = function(poll){
+        //bind a votePoll method to $scope that takes the key = poll.vote from the view and increases count by 1
+          
+          var key = poll.vote;
+          //bind poll.vote key from view to local variable key
+          
+          for(var i=0; i < poll.options.length; i++){
+          //loop through poll.options and find the option that matches poll.vote
+          //if so, update the votes by 1
+              if(poll.options[i].option === key ){
+                  
+                  poll.options[i].votes = poll.options[i].votes + 1;
+                  
+              }
+              
+          }
+          
+          delete poll.vote;
+          //delete poll.vote before saving to database
+          
+          Polls.editPoll(poll);
+          //replace poll by scope.poll
+          
+          $scope.poll.vote = $scope.poll.options[0].option;
+          //set poll.vote to first option in options array again for re-rendering poll.html    
+        };
+        
+        $scope.deletePoll = function(pollId){
             
           Polls.deletePoll(pollId);  
             

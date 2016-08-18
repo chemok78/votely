@@ -1,3 +1,6 @@
+<!--EditPollController controls the $scope-->
+<!--controller uses getPoll service to get the poll with id attaches it to $scope.poll-->
+<!--so poll has our specific poll-->
 <div class="container">
   <div class="panel panel-default">
     <div class="panel-body">
@@ -9,11 +12,13 @@
           <form>
             <div class="form-group">
               <label for="vote">I would like to vote for:</label>
-              <select class="form-control" id="vote">
-                <option ng-repeat="(key,value) in poll.options">{{key}}</option>
+              <select class="form-control" id="vote" ng-model="poll.vote" ng-options="item.option as item.option for item in poll.options">
+              <!--bind the chosen vote to the scope poll.vote-->  
+              <!--"What for value" as "what to display" for item(placeholder) in array-->  
               </select>
             </div>
-            <button type="submit" class="btn btn-primary" ng-click="">Vote</button>
+            <button type="submit" class="btn btn-primary" ng-click="votePoll(poll)">Vote</button>
+            <!--call the votePoll method with the poll.vote property that has the key that was chosen-->
           </form>
         </div>
         <div class="col-md-6">

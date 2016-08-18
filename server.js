@@ -105,17 +105,28 @@ mongodb.MongoClient.connect(process.env.DB_URL, function(err, database) {
     /*newPoll.options is an array of options as strings*/
     /*convert newPoll.options to an object with key:value as option: 0 (zero for number of votes to start with)*/
     
-    var newObject = { };
-    //create new empty object
+    var newArray = [ ];
+    //create new empty array, to hold objects for each option and votes
     
     newPoll.options.forEach(function(item){
     //loop and add each item of options array as key and set to 0 value
-      newObject[item] = 0;
+      
+      var newObject = { };
+      //empty local object
+      
+      newObject.option = item;
+      //set option property to the item
+      
+      newObject.votes = 0;
+      //set votes property to 0 to start with
+      
+      newArray.push(newObject);
+      //push the object to the array
       
     });
     
-    newPoll.options = newObject;
-    
+    newPoll.options = newArray;
+    //replace options object with the array
     
     if (!req.body.title || !req.body.options) {
       //if the title field and the options array are empty, do:    

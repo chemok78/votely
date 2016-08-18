@@ -1,7 +1,5 @@
 /*global Chart*/
 
-alert("yeah!");
-
 var barData = {
     labels: ['Italy', 'UK', 'USA', 'Germany', 'France', 'Japan'],
     datasets: [
@@ -18,6 +16,5 @@ var barData = {
     ]
 };
 
-var ctx = document.getElementById('myChart').getContext('2d');
-var skillsChart = new Chart(ctx).Pie(barData);
-
+var context = document.getElementById('myChart').getContext('2d');
+new Chart(context).Bar(barData);

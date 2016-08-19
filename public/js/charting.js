@@ -1,11 +1,11 @@
 /*global Chart*/
-
+/*
 var ctx = document.getElementById("myChart");
 
 var myChart = new Chart(ctx, {
-    type: 'bar',
+    type: 'doughnut',
     data: {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        labels: ["Pulp Fiction", "Star Wars", "Lord of the rings", "Yo Mama", "Terminator", "Shrek"],
         datasets: [{
             label: '# of Votes',
             data: [12, 19, 3, 5, 2, 3],
@@ -38,3 +38,5 @@ var myChart = new Chart(ctx, {
         }
     }
 });
+
+*/

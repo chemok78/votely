@@ -225,6 +225,59 @@ angular.module("pollsApp", ['ngRoute'])
                 //poll.vote in scope holds the selected option
                 //set poll.vote to first option in options array to prevent array showing empty first option
                 
+                /*Chart JS Implementation here*/
+                
+                /*global Chart*/
+                
+                var chartOptions = [ ];
+                
+                var chartVotes = [ ];
+                
+                for(var i = 0; i < $scope.poll.options.length ; i++){
+                    
+                    if($scope.poll.options[i].votes !== 0){
+                    
+                    chartOptions.push($scope.poll.options[i].option);
+                    chartVotes.push($scope.poll.options[i].votes);
+                    
+                    }
+                    
+                }
+                
+                console.log(chartOptions);
+                console.log(chartVotes);
+                                
+                var ctx = document.getElementById("myChart");
+                
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: chartOptions,
+                        datasets: [{
+                            label: '# of Votes',
+                            data: chartVotes,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255,99,132,1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    }
+                });
+
+                
             }, function (response){
                 
                 alert(response);

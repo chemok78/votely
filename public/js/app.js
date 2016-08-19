@@ -1,4 +1,5 @@
  /*global angular*/
+ /*global Chart*/
 
 angular.module("pollsApp", ['ngRoute'])
 //create Angular app and inject ngRoute dependency
@@ -211,7 +212,7 @@ angular.module("pollsApp", ['ngRoute'])
         
     })
     
-    .controller("EditPollController", function($scope,$routeParams,$location,Polls){
+    .controller("EditPollController", function($scope,$routeParams,$window,$location,Polls){
     //edit (add new option) and delete a poll        
         Polls.getPoll($routeParams.pollId)
         //routeparams.pollId matches whenever :pollId is in the route. Which is .when("/polls/:pollId"..
@@ -225,16 +226,15 @@ angular.module("pollsApp", ['ngRoute'])
                 //poll.vote in scope holds the selected option
                 //set poll.vote to first option in options array to prevent array showing empty first option
                 
-                /*Chart JS Implementation here*/
-                
-                /*global Chart*/
+                /*Chart JS Implementation*/
                 
                 var chartOptions = [ ];
                 
                 var chartVotes = [ ];
                 
                 for(var i = 0; i < $scope.poll.options.length ; i++){
-                    
+                //loop through poll.options and push option and vote to new arrays
+                //only push to new array when votes is not equal to 0
                     if($scope.poll.options[i].votes !== 0){
                     
                     chartOptions.push($scope.poll.options[i].option);
@@ -243,19 +243,19 @@ angular.module("pollsApp", ['ngRoute'])
                     }
                     
                 }
-                
-                console.log(chartOptions);
-                console.log(chartVotes);
                                 
-                var ctx = document.getElementById("myChart");
+                var ctx = document.getElementById("myChart").getContext('2d');
+                //select myChart canvas in poll.html and add to context
                 
                 new Chart(ctx, {
                     type: 'doughnut',
                     data: {
                         labels: chartOptions,
+                        //use chartOptions from loop $scope.poll.options
                         datasets: [{
                             label: '# of Votes',
                             data: chartVotes,
+                            //use chartVotes from loop $scope.poll.options
                             backgroundColor: [
                                 'rgba(255, 99, 132, 0.2)',
                                 'rgba(54, 162, 235, 0.2)',
@@ -316,6 +316,12 @@ angular.module("pollsApp", ['ngRoute'])
           
           $scope.poll.vote = $scope.poll.options[0].option;
           //set poll.vote to first option in options array again for re-rendering poll.html    
+       
+          //var redirectURL = "#/polls/" + poll._id;
+       
+          $window.location.reload();
+          //reload page to show updated chart with new vote
+       
         };
         
         $scope.deletePoll = function(pollId){

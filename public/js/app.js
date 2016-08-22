@@ -274,6 +274,19 @@ angular.module("pollsApp", ['ngRoute'])
                             ],
                             borderWidth: 1
                         }]
+                    },
+                    options: {
+                        legend: {
+                            
+                            position: 'bottom'
+                            
+                        },
+                        title:{
+                            
+                            display: true
+                            
+                        }
+                        
                     }
                 });
 

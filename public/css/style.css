@@ -11,3 +11,34 @@ body {
      width: 100%;
      height: 100%;
 }
+
+.css-form input.ng-valid.ng-touched {
+    
+    background-color: #78FA89;
+    
+}
+
+.css-form input.ng-invalid.ng-touched {
+    
+    background-color: #FA787E;
+    color:white;
+    
+}
+
+.css-form textarea.ng-valid.ng-touched {
+    
+    background-color: #78FA89;
+    
+}
+
+.css-form textarea.ng-invalid.ng-touched {
+    
+    background-color: #FA787E;
+    color:white;
+}
+
+.errorMessage {
+    
+    color: red;
+    
+}

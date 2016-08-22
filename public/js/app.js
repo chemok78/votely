@@ -138,7 +138,7 @@ angular.module("pollsApp", ['ngRoute'])
                 
             }, function(response){
                 
-                alert("Error editing poll");
+                //alert("Error editing poll");
                 
                 console.log(response);
                 
@@ -189,21 +189,33 @@ angular.module("pollsApp", ['ngRoute'])
         $scope.savePoll = function(poll){
         //attach savePoll method to scope that actually calls POST on /polls, using POLLS service
             
-            Polls.createPoll(poll).then(function(doc){
-            //call createPoll method from Polls service and return a doc with results
+            if($scope.pollForm.$valid){
+            //front end form validation
+            //pollForm name form is injected in $scope. $valid must be true for createPoll service to run
+                
+            alert("Thanks for the vote!");
             
-                var pollUrl = "/polls/" + doc.data._id;
+                Polls.createPoll(poll).then(function(doc){
+                //call createPoll method from Polls service and return a doc with results
                 
-                $location.path(pollUrl);
-                //$location.path() redirects to specified url + path
-                
-            }, function(response){
-            //second function handles the error       
-                
-                alert(response);
-                
-            });
+                    var pollUrl = "/polls/" + doc.data._id;
+                    
+                    $location.path(pollUrl);
+                    //$location.path() redirects to specified url + path
+                    
+                }, function(response){
+                //second function handles the error       
+                    
+                    alert(response);
+                    
+                });
             
+            } else {
+            //if $valid of pollForm not true, show alert to check form    
+            
+            alert("Check your form for missing fields!");
+            
+        }    
             
             
         };

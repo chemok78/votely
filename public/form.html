@@ -18,12 +18,13 @@
                 </div>
                 <div class="form-group">
                     <label>Options (seperated by spaces)</label>
-                    <input name="pollOptions" class="form-control" placeholder="Possible answers, separated by spaces"  ng-model="poll.options" id="poll" ng-trim="false" ng-list="&#32;" ng-pattern="/^((\b[a-zA-Z]{2,40}\b)\s*){2,}$/" ng-required="true">
+                    <input name="pollOptions" class="form-control" placeholder="Possible answers, separated by spaces"  ng-model="poll.options" id="poll" ng-trim="false" ng-list="&#32;" ng-pattern="/^((\b[\w]{2,40}\b)\s*){2,}$/" ng-required="true">
                     <!--/^[a-z]+(?:\s[a-z]+)+$/-->
                     <span class="errorMessage" ng-show="pollForm.pollOptions.$dirty && pollForm.pollOptions.$invalid">Please give at least 2 options</span>
                     <!--disable submit button $dirty = fields touched and $invalid (fields clicked but invalid input)-->
                 </div>
-                <input type="submit" class="btn btn-default btn-primary" ng-disabled="pollForm.pollTitle.$invalid || pollForm.pollOptions.$invalid"  ng-click="savePoll(poll)">
+                <!--<input type="submit" class="btn btn-default btn-primary" ng-disabled="pollForm.pollTitle.$invalid || pollForm.pollOptions.$invalid"  ng-click="savePoll(poll)">-->
+                <input type="submit" class="btn btn-default btn-primary" ng-disabled="pollForm.$invalid" ng-click="savePoll(poll)">
             </form>
             
         </div>

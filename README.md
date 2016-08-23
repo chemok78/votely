@@ -1,6 +1,6 @@
 Welcome to Votely: a Voting App build with the MEAN stack + Chart JS 
 
-## Functions:
+## User Stories:
 
 1) As an authenticated user, I can keep my polls and come back later to access them
 
@@ -17,3 +17,9 @@ Welcome to Votely: a Voting App build with the MEAN stack + Chart JS
 7) As an unauthenticated or authenticated user, I can see the results of polls in chart form (using ChartJS)
 
 8) A an authenticated user, if I don't like the options on a poll, I can create a new option
+
+##A few key functions highlighted
+
+-Poll form: client side form validation using AngularJS: instant user feedback and in controller before calling createPoll service (that interacts with REST API)
+-Poll form: server side input validation using Express Validator (before saving to MongoDB)
+-Chart implementation using ChartJS

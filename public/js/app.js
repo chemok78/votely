@@ -193,7 +193,7 @@ angular.module("pollsApp", ['ngRoute'])
             //front end form validation
             //pollForm name form is injected in $scope. $valid must be true for createPoll service to run
                 
-            alert("Thanks for the vote!");
+            alert("Thanks for submitting your poll!");
             
                 Polls.createPoll(poll).then(function(doc){
                 //call createPoll method from Polls service and return a doc with results
@@ -215,7 +215,7 @@ angular.module("pollsApp", ['ngRoute'])
             
             alert("Check your form for missing fields!");
             
-        }    
+        }   
             
             
         };

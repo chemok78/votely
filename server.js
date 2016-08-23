@@ -8,10 +8,12 @@ require('dotenv').config({
 //load dotenv module to work with .env file
 var bodyParser = require('body-parser');
 //load body parser to parse incoming request bodies, available under req.body
+var expressValidator = require('express-validator');
 var mongodb = require('mongodb');
 //load native mongoDB driver
 var ObjectID = mongodb.ObjectID;
 //load objectID method so we can do var objectId = new ObjectID
+
 
 var POLLS_COLLECTION = "polls";
 //set the variable POLLS_COLLECTION to the string cd"polls"
@@ -22,6 +24,20 @@ app.use(express.static(__dirname + "/public"));
 //use static middleware for public folders in the app instance
 app.use(bodyParser.json());
 //parse the request body as json in the app instance
+app.use(expressValidator({
+//use express Validator in app instance
+//with a custom validator checking for length of options array(must be at least 2 options)
+  customValidators: {
+     
+     minArrayLength: function(value) {
+       
+        return value > 1;
+        
+     }
+     
+  }
+}));
+
 
 var db;
 //create a database variable outside of the database connection callback to reuse the connection
@@ -99,63 +115,78 @@ mongodb.MongoClient.connect(process.env.DB_URL, function(err, database) {
     var newPoll = req.body;
     //get the request body and save as newPoll
     
-    newPoll.date = Date();
-    //create a new Date string and attach to .date property
+    req.checkBody('title', 'No title').notEmpty();
+    req.checkBody('options.length', 'Minimum of 2 options').minArrayLength();
+    //server side validation of submitted poll
     
-    /*newPoll.options is an array of options as strings*/
-    /*convert newPoll.options to an object with key:value as option: 0 (zero for number of votes to start with)*/
+    var errors = req.validationErrors();
     
-    var newArray = [ ];
-    //create new empty array, to hold objects for each option and votes
+    console.log(errors);
     
-    newPoll.options.forEach(function(item){
-    //loop and add each item of options array as key and set to 0 value
-      
-      var newObject = { };
-      //empty local object
-      
-      newObject.option = item;
-      //set option property to the item
-      
-      newObject.votes = 0;
-      //set votes property to 0 to start with
-      
-      newArray.push(newObject);
-      //push the object to the array
-      
-    });
+    if(!errors){
+    //if no validaiton errors, insert the poll in the database
     
-    newPoll.options = newArray;
-    //replace options object with the array
+        newPoll.date = Date();
+        //create a new Date string and attach to .date property
+        
+        /*newPoll.options is an array of options as strings*/
+        /*convert newPoll.options to an object with key:value as option: 0 (zero for number of votes to start with)*/
+        
+        var newArray = [ ];
+        //create new empty array, to hold objects for each option and votes
+        
+        newPoll.options.forEach(function(item){
+        //loop and add each item of options array as key and set to 0 value
+          
+          var newObject = { };
+          //empty local object
+          
+          newObject.option = item;
+          //set option property to the item
+          
+          newObject.votes = 0;
+          //set votes property to 0 to start with
+          
+          newArray.push(newObject);
+          //push the object to the array
+          
+        });
+        
+        newPoll.options = newArray;
+        //replace options object with the array
+        
+   
+        db.collection(POLLS_COLLECTION).insertOne(newPoll, function(err, doc) {
+          //insert newPoll and call a function with error and the result
+          //result contains the document from MongoDB
+          //ops contains the document(s) inserted with added _id fields
+          //native MongoDB Node JS driver - https://github.com/mongodb/node-mongodb-native
     
-    if (!req.body.title || !req.body.options) {
-      //if the title field and the options array are empty, do:    
-
-      handleError(res, "Invalid user input", "Fill in title and options.", 400);
-      //send a 400 bad request HTTP status code
-
-
+          if (err) {
+    
+            handleError(res, err.message, "Failed to create new poll.");
+    
+    
+          } else {
+    
+            res.status(201).json(doc.ops[0]);
+            //201 Created statuscode and send the inserted document in JSON format.
+          }
+    
+        }); 
+      
+      
+      
+    } else {
+    //else: if there are validation errors  
+      
+        
+        res.send('Check your form again', 400);
+      
+      
     }
-
-    db.collection(POLLS_COLLECTION).insertOne(newPoll, function(err, doc) {
-      //insert newPoll and call a function with error and the result
-      //result contains the document from MongoDB
-      //ops contains the document(s) inserted with added _id fields
-      //native MongoDB Node JS driver - https://github.com/mongodb/node-mongodb-native
-
-      if (err) {
-
-        handleError(res, err.message, "Failed to create new poll.");
-
-
-      } else {
-
-        res.status(201).json(doc.ops[0]);
-        //201 Created statuscode and send the inserted document in JSON format.
-      }
-
-    }); 
-
+    
+    
   }); //app.post("/contacts")
 
   /* "/polls/:id"

@@ -13,7 +13,16 @@ var mongodb = require('mongodb');
 //load native mongoDB driver
 var ObjectID = mongodb.ObjectID;
 //load objectID method so we can do var objectId = new ObjectID
+var passport = require('passport');
+//load passport js
+var FacebookStrategy = require('passport-facebook').Strategy;
+//load passport js Facebook strategy
 
+var FACEBOOK_APP_ID = '1736061676654316';
+var FACEBOOK_APP_SECRET = '5cbf7c4e121413e47f8a0e27b7684840';
+//set the App ID and App Secret for passport js
+
+var session = require('express-session');
 
 var POLLS_COLLECTION = "polls";
 //set the variable POLLS_COLLECTION to the string cd"polls"
@@ -24,6 +33,11 @@ app.use(express.static(__dirname + "/public"));
 //use static middleware for public folders in the app instance
 app.use(bodyParser.json());
 //parse the request body as json in the app instance
+app.use(session({ secret: 'keyboard cat' }));
+app.use(passport.initialize());
+//initialize passport js and use it in the app instance
+app.use(passport.session());
+//intialize passport js sessions and use it in the app instance
 app.use(expressValidator({
 //use express Validator in app instance
 //with a custom validator checking for length of options array(must be at least 2 options)
@@ -37,6 +51,90 @@ app.use(expressValidator({
      
   }
 }));
+
+passport.use(new FacebookStrategy({
+//use Facebook strategy with Passport JS  
+  
+  clientID: FACEBOOK_APP_ID,
+  clientSecret: FACEBOOK_APP_SECRET,
+  callbackURL: 'https://votely-chemok78.c9users.io/auth/facebook/callback'
+
+}, function(accessToken, refreshToken, profile, done){  
+//callback function after login  
+  
+  process.nextTick(function(){
+    
+    done(null, profile);
+    //return the user profile after login
+    
+    console.log(profile);
+    
+    console.log(accessToken);
+    
+    console.log(refreshToken);
+    
+  });
+  
+}));
+
+
+passport.serializeUser(function(user,done){
+//save user object in session
+//it determines which data of the user object is stored in the session
+//result of serializeUser is attached to the session as req.session.passport.user = {};  
+  
+  console.log("serialize ok!")
+  
+  
+  done(null, user);
+  
+  
+
+  
+});
+
+passport.deserializeUser(function(id, done){
+//retrieve with the key given as obj parameter
+//will be matced with the in memory object
+//the fetched object will be attached to req.user;
+
+      /*User.findById(id, function(err, user) {
+        done(err, user);*/
+  
+  console.log("deserialize ok!")
+
+  done(null, id);
+  
+});
+
+
+app.get('/auth/facebook', passport.authenticate('facebook'));
+//Authenticate with Passport JS when hitting this route
+
+app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+//Redirect to this route after login and redirect to success or error route  
+    successRedirect: '/success',
+    failureRedirect: '/error'
+  
+}));
+
+app.get('/success', function(req, res, next) {
+//redirect success route for Passport JS  
+  
+  console.log(req.user.displayName);
+  console.log(req.user.id);
+  
+  res.send('Successfully logged in.');
+  
+  
+});
+
+app.get('/error', function(req, res, next) {
+//redirect error route for Passport JS
+
+  res.send("Error logging in.");
+  
+});
 
 
 var db;
@@ -87,6 +185,7 @@ mongodb.MongoClient.connect(process.env.DB_URL, function(err, database) {
    */
 
   app.get("/polls", function(req, res) {
+    
 
     db.collection(POLLS_COLLECTION).find({}).toArray(function(err, docs) {
       //get the polls collection

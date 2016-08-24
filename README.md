@@ -20,6 +20,10 @@ Welcome to Votely: a Voting App build with the MEAN stack + Chart JS
 
 ##A few key functions highlighted
 
--Poll form: client side form validation using AngularJS: instant user feedback and in controller before calling createPoll service (that interacts with REST API)
--Poll form: server side input validation using Express Validator (before saving to MongoDB)
--Chart implementation using ChartJS
+a) Poll form: client side form validation using AngularJS: instant user feedback and in controller before calling createPoll service (that interacts with REST API)
+
+b) Poll form: server side input validation using Express Validator (before saving to MongoDB)
+
+c) Chart implementation using ChartJS
+
+

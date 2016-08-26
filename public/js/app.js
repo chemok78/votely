@@ -209,6 +209,12 @@ angular.module("pollsApp", ['ngRoute'])
                 
             alert("Thanks for submitting your poll!");
             
+                poll.id = $scope.userID;
+                //attach the userID from isLoggedIn from mainController to the poll before save database
+                
+                poll.displayName = $scope.displayName;
+                //attach the displayName from isLoggedIn from mainController to the poll before save database
+            
                 Polls.createPoll(poll).then(function(doc){
                 //call createPoll method from Polls service and return a doc with results
                 

@@ -29,10 +29,11 @@
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="active"><a href="#/">Home</a></li>
-                    <li><a href="#mypolls">My Polls</a></li>
-                    <li><a href="#newpoll" ng-show="">New Poll</a></li>
-                    <li><a href="/auth/facebook" target="_top">Sign in with Facebook</a></li>
-                    <li><a href="/logout">Sign Out</a></li>
+                    <li><a href="#mypolls" ng-show="loggedIn === true">My Polls</a></li>
+                    <li><a href="#newpoll" ng-show="loggedIn === true">New Poll</a></li>
+                    <li><a href="/auth/facebook" target="_top" ng-hide="loggedIn === true">Sign in with Facebook</a></li>
+                    <li><a href="" ng-show="loggedIn === true">Welcome, {{displayName}}</a></li>
+                    <li><a href="/logout" ng-show="loggedIn === true">Sign Out</a></li>
                 </ul>
             </div>
         </div>

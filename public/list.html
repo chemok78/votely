@@ -1,10 +1,11 @@
 <div class="container">
     <div class="jumbotron">
         <div class="container page-header">
-            <h2>Welcome to Votely</h2>
+            <h2 ng-hide="loggedIn === true">Welcome to Votely</h2>
+            <h2 ng-show="loggedIn === true">Hi {{displayName}}, Welcome to Votely</h2>
             <p>The easiest to use online voting app with instant chart results</p>
             <p>Below are the polls hosted by Votely. Click a poll to see the results and vote</p>
-            <p><a class="btn btn-primary btn-lg" href="#newpoll" role="button">Start a poll</a></p>
+            <p><a class="btn btn-primary btn-lg" href="#newpoll" role="button" ng-show="loggedIn === true">Start a poll</a></p>
         </div>
     </div>
     

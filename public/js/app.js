@@ -393,7 +393,11 @@ angular.module("pollsApp", ['ngRoute'])
             //when data from isLoggedIn service is ready work with the response
             //response is a JSON req.user object
                 
-                console.log(response.data.displayName);
+                console.log(response.data);
+                
+                $scope.displayName = response.data.displayName;
+                $scope.userID = response.data.id;
+                $scope.loggedIn = true;
                 
                 return response;
                 

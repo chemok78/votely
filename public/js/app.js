@@ -42,7 +42,21 @@ angular.module("pollsApp", ['ngRoute'])
         templateUrl: "mylist.html",
         controller: "MyListController"
             
-        })
+        })/*
+        .when("/check", {
+            
+            controller: "mainController",
+            resolve: {
+                
+                checking: function(Login){
+                    
+                    return Login.isLoggedIn();
+                    
+                }
+                
+            }
+            
+        })*/
         .otherwise({
            
            redirectTo: "/" 
@@ -356,5 +370,39 @@ angular.module("pollsApp", ['ngRoute'])
         };
     
             
-    });
+    })
+    .service("Login", function($http){
+    //service to send a http get to /checklogin API
+    //if a user is logged in it will return a req.user object in JSON format
+        
+        this.isLoggedIn = function(){
+        
+            return $http.get("/checklogin");
+            //returns a promise that can be resolved from mainController
+            
+        };
+        
+        
+    })
+    .controller("mainController", function($scope, Login){
+    //mainController intialized in every page load of index.html
     
+        Login.isLoggedIn()
+        //call Login Service to see if a user is logged in     
+            .then(function(response){
+            //when data from isLoggedIn service is ready work with the response
+            //response is a JSON req.user object
+                
+                console.log(response.data.displayName);
+                
+                return response;
+                
+            }, function(response){
+                
+                console.log("no user logged");
+                
+                return response;
+                
+            });
+         
+    })

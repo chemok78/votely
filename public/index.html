@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="pollsApp">
+<html lang="en" ng-app="pollsApp" ng-controller="mainController">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -30,8 +30,9 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="active"><a href="#/">Home</a></li>
                     <li><a href="#mypolls">My Polls</a></li>
-                    <li><a href="#newpoll">New Poll</a></li>
+                    <li><a href="#newpoll" ng-show="">New Poll</a></li>
                     <li><a href="/auth/facebook" target="_top">Sign in with Facebook</a></li>
+                    <li><a href="/logout">Sign Out</a></li>
                 </ul>
             </div>
         </div>

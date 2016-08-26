@@ -23,6 +23,7 @@ var FACEBOOK_APP_SECRET = '5cbf7c4e121413e47f8a0e27b7684840';
 //set the App ID and App Secret for passport js
 
 var session = require('express-session');
+//load express sessions 
 
 var POLLS_COLLECTION = "polls";
 //set the variable POLLS_COLLECTION to the string cd"polls"
@@ -34,6 +35,7 @@ app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.json());
 //parse the request body as json in the app instance
 app.use(session({ secret: 'keyboard cat' }));
+//use express sessions in the app instance
 app.use(passport.initialize());
 //initialize passport js and use it in the app instance
 app.use(passport.session());
@@ -52,6 +54,7 @@ app.use(expressValidator({
   }
 }));
 
+
 passport.use(new FacebookStrategy({
 //use Facebook strategy with Passport JS  
   
@@ -67,12 +70,6 @@ passport.use(new FacebookStrategy({
     done(null, profile);
     //return the user profile after login
     
-    console.log(profile);
-    
-    console.log(accessToken);
-    
-    console.log(refreshToken);
-    
   });
   
 }));
@@ -83,13 +80,11 @@ passport.serializeUser(function(user,done){
 //it determines which data of the user object is stored in the session
 //result of serializeUser is attached to the session as req.session.passport.user = {};  
   
-  console.log("serialize ok!")
+  console.log("serialize ok!");
   
   
   done(null, user);
   
-  
-
   
 });
 
@@ -121,18 +116,37 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', {
 app.get('/success', function(req, res, next) {
 //redirect success route for Passport JS  
   
-  console.log(req.user.displayName);
-  console.log(req.user.id);
-  
-  res.send('Successfully logged in.');
-  
+  res.send('Successfully logged in. You can close this window');
   
 });
+
 
 app.get('/error', function(req, res, next) {
 //redirect error route for Passport JS
 
   res.send("Error logging in.");
+  
+});
+
+
+app.get('/checklogin', function(req,res,next){
+//API endpoint for checking if a user is logged in in Angular JS service and controller
+  
+    if(req.user){
+    //Passport js attaches a user object to every request when user is logged in
+    //if req.user is true there is a logged in user
+      
+     return res.status(200).json(req.user);
+     //return the req.user as a JSON object
+   
+      
+    } else {
+    //if req.user doesnt exist
+        
+      console.log("there is no user logged in");
+  
+      
+    } 
   
 });
 
@@ -370,3 +384,11 @@ mongodb.MongoClient.connect(process.env.DB_URL, function(err, database) {
 
 
 }); //app.delete("/polls/:id")
+
+app.get('/logout', function(req, res){
+  
+  req.logout();
+  
+  res.redirect('/');
+  
+});

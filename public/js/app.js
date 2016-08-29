@@ -1,4 +1,4 @@
- /*global angular*/
+/*global angular*/
  /*global Chart*/
 
 angular.module("pollsApp", ['ngRoute'])
@@ -37,26 +37,27 @@ angular.module("pollsApp", ['ngRoute'])
             controller: "EditPollController"
             
         })
-        .when("/mypolls", {
+        .when("/mypolls/:id", {
         //route for showing polls of logged in user
+        //user id in URL parameter generated from $scope.userID from loggedIN user service in MainController
         templateUrl: "mylist.html",
         controller: "MyListController"
-            
-        })/*
-        .when("/check", {
-            
-            controller: "mainController",
-            resolve: {
+        
+        /*resolve: {
+             
+             polls: function(Polls){
+             //inject Polls service and use .getPolls() to get all the polls
+             //returns a polls property that can be injected in controller 
+             //must be resolved before this route is loaded and injected in controller
+              
+                 return Polls.getMyPolls();
+                 
+                }   
                 
-                checking: function(Login){
-                    
-                    return Login.isLoggedIn();
-                    
-                }
-                
-            }
+            }*/
+        
             
-        })*/
+        })
         .otherwise({
            
            redirectTo: "/" 
@@ -84,21 +85,31 @@ angular.module("pollsApp", ['ngRoute'])
             
         };
         
-        this.getMyPolls = function(){
-        //service for getting all polls of logged in user. GET /polls    
-          return $http.get("/polls")
+        this.getMyPolls = function(id){
+        //service for getting all polls of logged in user with GET to mypollslist/:id  
+        //id parameter is inserted from MyPollsController using $routeParams.id
+      
+        var url = "mypollslist/" + id;
+        
+      
+          return $http.get(url);
+          //returns a promise to be used in MyPollsController  
+          /*
+          
             .then(function(response){
                 
                 return response;
                 
             }, function(response){
                 
-                alert("Error retrieving polls.");
+                alert("Error retrieving your polls.");
                 
-            })
+                console.log(response);
+                
+            });
           
             
-            
+            */
         };
         
         this.createPoll = function(poll){
@@ -187,6 +198,27 @@ angular.module("pollsApp", ['ngRoute'])
        $scope.polls = polls.data; 
        
     })
+    .controller('MyListController', function(Polls, $scope, $routeParams){
+    //uses Polls service to retrieve the polls and binds data to the global scope
+    
+        Polls.getMyPolls($routeParams.id)
+        //call getMyPolls service that sends a GET /mypollslist/:id to retrieve dataa from DB
+        
+          .then(function(response){
+                
+                $scope.polls = response.data;
+                //attach the data to userID polls to the scope of this myList page
+                
+            }, function(response){
+                
+                alert("Error retrieving your polls.");
+                
+                console.log(response);
+                
+            });
+        
+        
+    })
     .controller('NewPollController', function($scope,$location,Polls){
     //controller to inset new poll in database using Polls service
     //and route the user to the specific poll
@@ -209,7 +241,7 @@ angular.module("pollsApp", ['ngRoute'])
                 
             alert("Thanks for submitting your poll!");
             
-                poll.id = $scope.userID;
+                poll.userIDg = $scope.userID;
                 //attach the userID from isLoggedIn from mainController to the poll before save database
                 
                 poll.displayName = $scope.displayName;
@@ -390,7 +422,7 @@ angular.module("pollsApp", ['ngRoute'])
         
         
     })
-    .controller("mainController", function($scope, Login){
+    .controller("mainController", function($scope, $rootScope, Login){
     //mainController intialized in every page load of index.html
     
         Login.isLoggedIn()
@@ -399,11 +431,10 @@ angular.module("pollsApp", ['ngRoute'])
             //when data from isLoggedIn service is ready work with the response
             //response is a JSON req.user object
                 
-                console.log(response.data);
-                
                 $scope.displayName = response.data.displayName;
                 $scope.userID = response.data.id;
                 $scope.loggedIn = true;
+                $scope.userlink = "#mypolls/" + response.data.id;
                 
                 return response;
                 
@@ -415,4 +446,5 @@ angular.module("pollsApp", ['ngRoute'])
                 
             });
          
-    })
+    });
+

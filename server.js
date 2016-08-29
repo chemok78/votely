@@ -200,27 +200,50 @@ mongodb.MongoClient.connect(process.env.DB_URL, function(err, database) {
 
   app.get("/polls", function(req, res) {
     
-
-    db.collection(POLLS_COLLECTION).find({}).toArray(function(err, docs) {
-      //get the polls collection
-      //use find with empty object to load all documents 
-      //find returns and cursor and convert it to Array. It iterates completely the cursor
-
-      if (err) {
-
-        handleError(res, err.message, "Failed to get polls.");
-
-      } else {
-      
-        res.status(200).json(docs);
-        //Status code 200 OK and send results as JSON object to client
-
-      }
-
-    });
+        db.collection(POLLS_COLLECTION).find({}).toArray(function(err, docs) {
+          //get the polls collection
+          //use find with empty object to load all documents 
+          //find returns and cursor and convert it to Array. It iterates completely the cursor
+    
+          if (err) {
+    
+            handleError(res, err.message, "Failed to get polls.");
+    
+          } else {
+          
+            res.status(200).json(docs);
+            //Status code 200 OK and send results as JSON object to client
+    
+          }
+    
+        });
 
 
   }); //app.get("/polls")
+  
+  
+  app.get("/mypollslist/:id", function(req, res) {
+
+        db.collection(POLLS_COLLECTION).find({"userID": req.params.id}).toArray(function(err, docs) {
+          //get the polls collection belonging to user ID
+          //find returns a cursor and convert it to Array. It iterates completely the cursor
+    
+          if (err) {
+    
+            handleError(res, err.message, "Failed to get polls.");
+    
+          } else {
+          
+            res.status(200).json(docs);
+            //Status code 200 OK and send results as JSON object to client
+            //return data back to MyPollsController
+    
+          }
+
+    });
+
+  });
+  
 
   app.post("/polls", function(req, res) {
     //create a new poll

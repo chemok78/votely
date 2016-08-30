@@ -173,18 +173,10 @@ angular.module("pollsApp", ['ngRoute'])
         
         this.deletePoll = function(pollId){
         //service for deleting a poll. DELETE /polls/:pollId
+        
             var url = "/polls/" + pollId;
-            return $http.delete(url)
-                .then(function(response){
-                    
-                    return response;
-                    
-                }, function(response){
-                    
-                    alert("Error deleting poll");
-                    console.log(response);
-                    
-                })
+            
+            return $http.delete(url);
             
             
         };
@@ -277,7 +269,8 @@ angular.module("pollsApp", ['ngRoute'])
     })
     
     .controller("EditPollController", function($scope,$routeParams,$window,$location,Polls){
-    //edit (add new option) and delete a poll        
+    //edit (add new option) and delete a poll  
+    
         Polls.getPoll($routeParams.pollId)
         //routeparams.pollId matches whenever :pollId is in the route. Which is .when("/polls/:pollId"..
         //get the poll first using the contactId parameter
@@ -436,9 +429,26 @@ angular.module("pollsApp", ['ngRoute'])
        
         };
         
-        $scope.deletePoll = function(pollId){
+        $scope.deleteThisPoll = function(){
             
-          Polls.deletePoll(pollId);  
+          Polls.deletePoll($routeParams.pollId)
+          //take the pollID in the route parameter and call deletePoll service that returns a promise
+           .then(function(response){
+                    
+                    alert("Poll deleted!");
+                    
+                    var url = "/mypolls/" + $scope.userID;
+                    //redirect to myPolls page after delete
+                    
+                    $location.path(url);
+                    
+                }, function(response){
+                    
+                    alert("Error deleting poll");
+                    
+                    console.log(response);
+                    
+                })
             
         };
     

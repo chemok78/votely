@@ -385,6 +385,7 @@ mongodb.MongoClient.connect(process.env.DB_URL, function(err, database) {
   }); //app.put("polls/:id")
 
   app.delete("/polls/:id", function(req, res) {
+  //called from deletePoll and EditPollController for deleting a poll
 
     db.collection(POLLS_COLLECTION).deleteOne({
       _id: new ObjectID(req.params.id)
@@ -398,7 +399,6 @@ mongodb.MongoClient.connect(process.env.DB_URL, function(err, database) {
 
         res.status(204).end();
       }
-
 
     });
 

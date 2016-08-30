@@ -30,7 +30,8 @@
               <option value="" ng-disabled="true" disabled>Please give your vote</option>
               </select>
             </div>
-            <button type="submit" class="btn btn-primary" ng-click="votePoll(poll)" ng-disabled="poll.vote === undefined || poll.vote === ''">Vote</button>
+            <br>
+            <button type="submit" class="btn btn-primary btn-block" ng-click="votePoll(poll)" ng-disabled="poll.vote === undefined || poll.vote === ''">Vote</button>
             <!--call the votePoll method with the poll.vote property that has the key that was chosen-->
             <!--disable vote button when poll.vote is empty string or undefined-->
 
@@ -40,6 +41,11 @@
         <div class="col-md-6">
           <canvas id="myChart" width="400" height="400">
           </canvas> 
+          <br>
+          <div class="text-center">
+            <button type="submit" class="btn btn-danger" ng-click="deleteThisPoll()" ng-show="userID === poll.userID">Delete Poll</button>
+            <!--show a delete Poll button when user is loggedin and poll belongs to user-->
+          </div>
         </div>
       </div>
     </div>

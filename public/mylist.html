@@ -3,11 +3,11 @@
         <div class="container page-header">
             <h2>Hi {{displayName}}, These are your Polls</h2>
             <p>Below are the polls you own. Click a poll to see the results and vote</p>
-            <p><a class="btn btn-primary btn-lg" href="/" role="button">Start a poll</a></p>
+            <p><a class="btn btn-primary btn-lg" href="#newpoll" role="button">Start a poll</a></p>
         </div>
     </div>
     
-    <ul class="list-group">
+    <ul class="list-group text-center">
         <li ng-repeat="poll in polls | orderBy: '-date'" class="list-group-item"><a ng-href="#/polls/{{poll._id}}">{{poll.title}}</a></li>
     </ul>
 </div>

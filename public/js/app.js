@@ -241,7 +241,7 @@ angular.module("pollsApp", ['ngRoute'])
                 
             alert("Thanks for submitting your poll!");
             
-                poll.userIDg = $scope.userID;
+                poll.userID = $scope.userID;
                 //attach the userID from isLoggedIn from mainController to the poll before save database
                 
                 poll.displayName = $scope.displayName;
@@ -286,7 +286,7 @@ angular.module("pollsApp", ['ngRoute'])
                $scope.poll = doc.data; 
                //attach the data to the $scope as poll property
                
-               $scope.poll.vote = $scope.poll.options[0].option;
+               //$scope.poll.vote = $scope.poll.options[0].option;
                 //poll.vote in scope holds the selected option
                 //set poll.vote to first option in options array to prevent array showing empty first option
                 
@@ -373,7 +373,42 @@ angular.module("pollsApp", ['ngRoute'])
           
           var key = poll.vote;
           //bind poll.vote key from view to local variable key
+          //check if key exists in $scope.options. If not add the key as an option + votes = 1
           
+          var arrayOptions = [ ];
+          //empty array to hold only the options values instead if key:value
+          
+          for(var i = 0; i < poll.options.length; i++){
+          //loop through poll.options array of objects and save all the values in array
+          
+              arrayOptions.push(poll.options[i].option);
+              
+          }
+          
+          if(arrayOptions.indexOf(key) === -1 ){
+          //loop array to check if value exists. If no, create new object and push to poll.options
+              
+              poll.options.push({"option": key, "votes": 1 });
+              
+              
+          } else {
+         //If value exists, loop through poll.options again and add the vote       
+              
+              for(var j=0; j < poll.options.length; j++){
+                //loop through poll.options and find the option that matches poll.vote
+                 //if so, update the votes by 1
+                 
+                  if(poll.options[j].option === key ){
+                      
+                      poll.options[j].votes = poll.options[j].votes + 1;
+                      
+                  }
+              
+            }
+              
+          } //if, else
+          
+          /*
           for(var i=0; i < poll.options.length; i++){
           //loop through poll.options and find the option that matches poll.vote
           //if so, update the votes by 1
@@ -384,6 +419,7 @@ angular.module("pollsApp", ['ngRoute'])
               }
               
           }
+          */
           
           delete poll.vote;
           //delete poll.vote before saving to database
@@ -391,10 +427,9 @@ angular.module("pollsApp", ['ngRoute'])
           Polls.editPoll(poll);
           //replace poll by scope.poll
           
-          $scope.poll.vote = $scope.poll.options[0].option;
+          //$scope.poll.vote = $scope.poll.options[0].option;
           //set poll.vote to first option in options array again for re-rendering poll.html    
        
-          //var redirectURL = "#/polls/" + poll._id;
        
           $window.location.reload();
           //reload page to show updated chart with new vote

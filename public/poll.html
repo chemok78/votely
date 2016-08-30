@@ -12,16 +12,28 @@
           <h5>
             Created by: {{poll.displayName}}
           </h5>
-          <form>
-            <div class="form-group">
+          <form name="voteForm">
+            <div ng-show="userID === poll.userID" class="form-group">
+                <label><input type="checkbox" ng-model="checked" placeholder="add text here" ng-click="poll.vote = ''"> I want my own option</label>
+                 <!--Reset poll.vote to empty string when clicked so that vote button is disabled-->
+            </div>
+             <div class="form-group" ng-show="checked === true">
+            <!--only show extra option when useID from isLoggedin MainController === poll.userID-->  
+               <label for="vote">Vote with my own option</label>
+               <input ng-model="poll.vote" placeholder="Enter your own option" class="form-control" type="text">
+            </div>
+            <div class="form-group" ng-hide="checked === true">
               <label for="vote">I would like to vote for:</label>
               <select class="form-control" id="vote" ng-model="poll.vote" ng-options="item.option as item.option for item in poll.options">
               <!--bind the chosen vote to the scope poll.vote-->  
               <!--"What for value" as "what to display" for item(placeholder) in array-->  
+              <option value="" ng-disabled="true" disabled>Please give your vote</option>
               </select>
             </div>
-            <button type="submit" class="btn btn-primary" ng-click="votePoll(poll)">Vote</button>
+            <button type="submit" class="btn btn-primary" ng-click="votePoll(poll)" ng-disabled="poll.vote === undefined || poll.vote === ''">Vote</button>
             <!--call the votePoll method with the poll.vote property that has the key that was chosen-->
+            <!--disable vote button when poll.vote is empty string or undefined-->
+
           </form>
           </br>
         </div>

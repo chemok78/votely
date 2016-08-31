@@ -454,19 +454,6 @@ angular.module("pollsApp", ['ngRoute'])
               
           } //if, else
           
-          /*
-          for(var i=0; i < poll.options.length; i++){
-          //loop through poll.options and find the option that matches poll.vote
-          //if so, update the votes by 1
-              if(poll.options[i].option === key ){
-                  
-                  poll.options[i].votes = poll.options[i].votes + 1;
-                  
-              }
-              
-          }
-          */
-          
           delete poll.vote;
           //delete poll.vote before saving to database
           

@@ -5,6 +5,7 @@
 ##3) Hide links (new poll form + mypolls) in html when user is not logged in with loggedin == true
 ##4) Hide add option and delete poll buttons when poll doesnt belong to user with userID === poll.userID
 
+##deleteOne and updateOne in database check if userID and req.user.id match before execution
 
 Passport JS Auth middleware function: 
 

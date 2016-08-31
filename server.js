@@ -96,7 +96,7 @@ passport.deserializeUser(function(id, done){
       /*User.findById(id, function(err, user) {
         done(err, user);*/
   
-  console.log("deserialize ok!")
+  console.log("deserialize ok!");
 
   done(null, id);
   
@@ -125,6 +125,47 @@ app.get('/error', function(req, res, next) {
 //redirect error route for Passport JS
 
   res.send("Error logging in.");
+  
+});
+
+//middleware function to be used for every secured route
+var auth = function(req,res,next){
+  
+    if(!req.isAuthenticated()){
+    //if user is not authenticated send a 401 response status code
+    //Every 401 will be intercepted by $httpProvider.interceptors in Angular Frontend
+      
+      console.log("You need to login!");
+      
+      res.sendStatus(401);
+      
+      
+    } else {
+    //if user is authenticated move on to next middleware function in stack
+    
+      console.log("User is logged in, success!");
+      
+      next();
+      
+    }
+    
+  
+};
+
+//route to TEST if user is logged in or not, called from Angular frond-end
+app.get('/loggedin', function(req,res){
+  
+  if(req.isAuthenticated()){
+  //if user is authenticated send the user  
+    
+    res.send(req.user);
+    
+  } else {
+  //if user is not authenticatd send a 0 string  
+    
+    res.send('0');
+    
+  }
   
 });
 
@@ -222,7 +263,7 @@ mongodb.MongoClient.connect(process.env.DB_URL, function(err, database) {
   }); //app.get("/polls")
   
   
-  app.get("/mypollslist/:id", function(req, res) {
+  app.get("/mypollslist/:id", auth, function(req, res) {
 
         db.collection(POLLS_COLLECTION).find({"userID": req.params.id}).toArray(function(err, docs) {
           //get the polls collection belonging to user ID
@@ -244,7 +285,6 @@ mongodb.MongoClient.connect(process.env.DB_URL, function(err, database) {
 
   });
   
-
   app.post("/polls", function(req, res) {
     //create a new poll
     
@@ -354,7 +394,37 @@ mongodb.MongoClient.connect(process.env.DB_URL, function(err, database) {
 
   });
 
-  app.put("/polls/:id", function(req, res) {
+  app.put("/polls/:id", auth, function(req, res) {
+
+    var updatePoll = req.body;
+    //set a local variable updatePoll to the request.body
+    delete updatePoll._id;
+    //delete the id from the updatePoll, because we don't want to change the id of the existing document in the db
+
+    db.collection(POLLS_COLLECTION).updateOne({
+      _id: new ObjectID(req.params.id)
+    }, updatePoll, function(err, doc) {
+      //convert id from parameter to mongo ObjectID and find the document
+      //change the document with updatePoll
+
+     if (err) {
+
+        handleError(res, err.message, "Failed to update poll");
+
+      } else {
+
+        res.status(204).end();
+        //if update successfull send a 204 status code: successfully fullfilled request and there is no additional content to send
+        //end pipe
+
+      }
+
+    });
+
+
+  }); //app.put("polls/:id")
+  
+    app.put("/vote/:id", function(req, res) {
 
     var updatePoll = req.body;
     //set a local variable updatePoll to the request.body
@@ -384,7 +454,7 @@ mongodb.MongoClient.connect(process.env.DB_URL, function(err, database) {
 
   }); //app.put("polls/:id")
 
-  app.delete("/polls/:id", function(req, res) {
+  app.delete("/polls/:id", auth, function(req, res) {
   //called from deletePoll and EditPollController for deleting a poll
 
     db.collection(POLLS_COLLECTION).deleteOne({

@@ -26,4 +26,7 @@ b) Poll form: server side input validation using Express Validator (before savin
 
 c) Chart implementation using ChartJS
 
+d) User Authentication with Passport JS
+
+e) RESTful API endpoints protected server side and URL's protected Angular JS front end side
 

@@ -1,5 +1,36 @@
 /*global angular*/
  /*global Chart*/
+ 
+var checkLoggedin = function($q, $timeout, $http, $location, $rootScope){
+//funciton that that checks if a user is loggedin by answering to a promise
+
+    var deferred = $q.defer();
+    //initialize a new promise
+    
+    $http.get('/loggedin').success(function(user){
+    //make $http GET call to check if user is logged in    
+        
+       if(user !== '0'){
+    //resolve the promise if user is logged in       
+           deferred.resolve();
+           
+       } else{
+    //if user is not logged in, reject the promise and redirect to login path       
+           
+           
+           $rootScope.message = 'You need to log in.';
+           alert("You need to login to access this page");
+           deferred.reject();
+           $location.url('/auth/facebook');
+           
+       }
+        
+    });
+    
+    return deferred.promise;
+    
+    
+};
 
 angular.module("pollsApp", ['ngRoute'])
 //create Angular app and inject ngRoute dependency
@@ -26,7 +57,13 @@ angular.module("pollsApp", ['ngRoute'])
         //route for creating a new poll
         //shows the form for creating a new poll
             templateUrl: "form.html",
-            controller: "NewPollController"
+            controller: "NewPollController",
+            resolve: {
+            //controller instantiates only after the login check is done    
+                
+                loggedin: checkLoggedin
+                
+            }
         })
         .when("/polls/:pollId", {
         //find and show a poll by pollId
@@ -41,20 +78,13 @@ angular.module("pollsApp", ['ngRoute'])
         //route for showing polls of logged in user
         //user id in URL parameter generated from $scope.userID from loggedIN user service in MainController
         templateUrl: "mylist.html",
-        controller: "MyListController"
-        
-        /*resolve: {
-             
-             polls: function(Polls){
-             //inject Polls service and use .getPolls() to get all the polls
-             //returns a polls property that can be injected in controller 
-             //must be resolved before this route is loaded and injected in controller
-              
-                 return Polls.getMyPolls();
-                 
-                }   
-                
-            }*/
+        controller: "MyListController",
+        resolve: {
+        //controller instantiates only after the login check is done     
+            
+                loggedin: checkLoggedin   
+            
+        }
         
             
         })
@@ -151,6 +181,29 @@ angular.module("pollsApp", ['ngRoute'])
         this.editPoll = function(poll) {
          //service for editing a poll. PUT /polls/:pollId
          var url = "/polls/" + poll._id;
+         
+         return $http.put(url,poll)
+         //$http.put(url, data, [config])
+            .then(function(response){
+                
+                alert("Thanks for the vote!");
+                
+                return response;
+                
+                
+            }, function(response){
+                
+                //alert("Error editing poll");
+                
+                console.log(response);
+                
+            });
+          
+        };
+        
+        this.votePoll = function(poll) {
+         //service for editing a poll. PUT /polls/:pollId
+         var url = "/vote/" + poll._id;
          
          return $http.put(url,poll)
          //$http.put(url, data, [config])
@@ -417,12 +470,11 @@ angular.module("pollsApp", ['ngRoute'])
           delete poll.vote;
           //delete poll.vote before saving to database
           
-          Polls.editPoll(poll);
+          Polls.votePoll(poll);
           //replace poll by scope.poll
           
           //$scope.poll.vote = $scope.poll.options[0].option;
           //set poll.vote to first option in options array again for re-rendering poll.html    
-       
        
           $window.location.reload();
           //reload page to show updated chart with new vote
@@ -491,5 +543,32 @@ angular.module("pollsApp", ['ngRoute'])
                 
             });
          
-    });
-
+    })
+    .service('authInterceptor', function($q) {
+    //service to intercept a 401 response from Express REST API if user is not authenticated for a protected endPoint  
+        
+        var service = this;
+    
+        service.responseError = function(response) {
+        //make a authIntercepter.responseError() method that takes a server response   
+            
+            if (response.status == 401){
+            //if response error status is 401 redirect to login URL     
+                
+                window.location = "/auth/facebook";
+            }
+            //if the response error status is something other than 401 reject the promise with the response
+            
+            return $q.reject(response);
+            
+        };
+    
+    })
+    .config(['$httpProvider', function($httpProvider) {
+    //add authInterceptor service to httpProvider so its used in    
+        
+        $httpProvider.interceptors.push('authInterceptor');
+        
+    }]);
+    
+    

@@ -402,7 +402,7 @@ mongodb.MongoClient.connect(process.env.DB_URL, function(err, database) {
     //delete the id from the updatePoll, because we don't want to change the id of the existing document in the db
 
     db.collection(POLLS_COLLECTION).updateOne({
-      _id: new ObjectID(req.params.id)
+      _id: new ObjectID(req.params.id), userID: req.user.id
     }, updatePoll, function(err, doc) {
       //convert id from parameter to mongo ObjectID and find the document
       //change the document with updatePoll
@@ -432,7 +432,7 @@ mongodb.MongoClient.connect(process.env.DB_URL, function(err, database) {
     //delete the id from the updatePoll, because we don't want to change the id of the existing document in the db
 
     db.collection(POLLS_COLLECTION).updateOne({
-      _id: new ObjectID(req.params.id), userID: req.user.id
+      _id: new ObjectID(req.params.id)
       //userID must match the req.user.id from Passport to make sure the poll belongs to the user
     }, updatePoll, function(err, doc) {
       //convert id from parameter to mongo ObjectID and find the document

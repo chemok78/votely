@@ -3,10 +3,11 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!--load jQuery-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-        <!--load Bootstrap JS-->
+           <!--load Bootstrap JS-->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         <!--load Angular JS-->
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
@@ -16,13 +17,23 @@
         <!--link custom CSS file-->
         <link rel="stylesheet" type="text/css" href="/css/style.css">
         <script src="/js/app.js"></script>
+         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet"> 
+         <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"> 
+         <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet"> 
+         <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet"> 
     </head>
     
     <body>
     <!-- NAVBAR ================== ---->        
     <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container-fluid">
+        <div class="container">
             <div class="nav-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                 <span class="icon-bar"></span>
+                 <span class="icon-bar"></span>
+                 <span class"icon-bar"></span>
+                 <span class"icon-bar"></span>
+                </button>
                 <a class="navbar-brand" href="#/">Votely</a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
@@ -31,8 +42,12 @@
                     <li><a ng-href="{{userlink}}" ng-show="loggedIn === true">My Polls</a></li>
                     <li><a href="#newpoll" ng-show="loggedIn === true">New Poll</a></li>
                     <li><a href="/auth/facebook" target="_top" ng-hide="loggedIn === true">Sign in with Facebook</a></li>
-                    <li><a href="/logout" ng-show="loggedIn === true">Sign Out</a></li>
-                    <li><a href="/logout" ng-show="loggedIn === true">{{displayName}}</a></li>
+                    <li class="dropdown">
+                      <a ng-show="loggedIn === true" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Account<span class="caret"></span></a>
+                          <ul class="dropdown-menu">
+                            <li><a href="/logout" ng-show="loggedIn === true">Sign Out</a></li>
+                          </ul>
+                            </li>
                 </ul>
             </div>
         </div>

@@ -18,8 +18,8 @@ var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 //load passport js Facebook strategy
 
-var FACEBOOK_APP_ID = '1736061676654316';
-var FACEBOOK_APP_SECRET = '5cbf7c4e121413e47f8a0e27b7684840';
+//var FACEBOOK_APP_ID = '1736061676654316';
+//var FACEBOOK_APP_SECRET = '5cbf7c4e121413e47f8a0e27b7684840';
 //set the App ID and App Secret for passport js
 
 var session = require('express-session');
@@ -58,9 +58,9 @@ app.use(expressValidator({
 passport.use(new FacebookStrategy({
 //use Facebook strategy with Passport JS  
   
-  clientID: FACEBOOK_APP_ID,
-  clientSecret: FACEBOOK_APP_SECRET,
-  callbackURL: 'https://votely-chemok78.c9users.io/auth/facebook/callback'
+  clientID: process.env.FACEBOOK_APP_ID,
+  clientSecret: process.env.FACEBOOK_APP_SECRET,
+  callbackURL: process.env.FACEBOOK_CALLBACK_PRODUCTION
 
 }, function(accessToken, refreshToken, profile, done){  
 //callback function after login  

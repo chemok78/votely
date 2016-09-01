@@ -1,5 +1,7 @@
 Welcome to Votely: a Voting App build with the MEAN stack + Chart JS 
 
+Live app at https://myvotely.herokuapp.com/
+
 ## User Stories:
 
 1) As an authenticated user, I can keep my polls and come back later to access them

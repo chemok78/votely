@@ -1,4 +1,3 @@
-
 ##Routes
 ##1)Protect REST endpoints with passport middleware funciton 'auth' > A user is logged in
 ##2) protect URL's from Angular Routeprovider (use resolves so that controller loads only when the loggedin check is done)
@@ -102,3 +101,16 @@ All routes:
     Mypolls link is hidden when user is not logged in
     calls Polls.getMyPolls service > return $http.get( "mypollslist/" + id;);
     binds $scope.polls to scope
+    
+##From dev to production: set environment variables for Facebook
+
+passport.use(new FacebookStrategy({
+//use Facebook strategy with Passport JS  
+  
+  clientID: process.env.FACEBOOK_APP_ID,
+  clientSecret: process.env.FACEBOOK_APP_SECRET,
+  callbackURL: process.env.FACEBOOK_CALLBACK_PRODUCTION
+  
+Set app callback in Facebook Developers account  
+  
+  

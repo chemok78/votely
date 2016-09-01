@@ -472,23 +472,27 @@ angular.module("pollsApp", ['ngRoute'])
             
           Polls.deletePoll($routeParams.pollId)
           //take the pollID in the route parameter and call deletePoll service that returns a promise
-           .then(function(response){
+          .then(function(response){
+          //response.status === 2xx   
+          //A response status code between 200 and 299 is considered a success status and will result in the success callback being called. Any response status code outside of that range is considered an error status and will result in the error callback being called.
+                    console.log(response);
                     
                     alert("Poll deleted!");
-                    
+                        
                     var url = "/mypolls/" + $scope.userID;
                     //redirect to myPolls page after delete
                     
                     $location.path(url);
                     
                 }, function(response){
+                //response.status === 4xx or 5xx    
                     
                     alert("Error deleting poll");
                     
                     console.log(response);
                     
-                })
-            
+                });
+          
         };
     
             
@@ -540,7 +544,7 @@ angular.module("pollsApp", ['ngRoute'])
         //make a authIntercepter.responseError() method that takes a server response   
             
             if (response.status == 401){
-            //if response error status is 401 redirect to login URL     
+            //if response error status is 401 redirect to login URL 
                 
                 window.location = "/auth/facebook";
             }

@@ -461,16 +461,28 @@ mongodb.MongoClient.connect(process.env.DB_URL, function(err, database) {
     db.collection(POLLS_COLLECTION).deleteOne({
       _id: new ObjectID(req.params.id), userID: req.user.id
        //userID must match the req.user.id from Passport to make sure the poll belongs to the user
-    }, function(err, doc) {
-
-      if (err) {
-
-        handleError(res, err.message, "Failed to delete contact");
-
-      } else {
-
-        res.status(204).end();
+    }, function(err, result) {
+      
+      console.log(result.deletedCount);
+      //result.deletedCount is 1 when a document is delete and 0 when nothing is deleted
+      
+      if(err){
+        
+        res.status(404).end();
+        
       }
+      
+      if(result.deletedCount === 0){
+        
+        res.status(404).end();
+        //error handling in Angular error callback
+        
+      } else {
+        
+        res.status(204).end();
+        //error handling in Angular success callback
+      }
+      
 
     });
 
